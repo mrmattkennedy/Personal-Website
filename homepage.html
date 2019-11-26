@@ -151,8 +151,8 @@ a:hover::after{
 
 
 .about {
-  width: 100px;
-  height: 40px;
+  width: 105px;
+  height: 45px;
   position: absolute;
   left: 500px;
   top: 50px;
@@ -162,6 +162,13 @@ a:hover::after{
   background-position: top left, top right, bottom right, bottom left;
   background-repeat: no-repeat;
   transition: 0.75s;
+  overflow: hidden;
+}
+
+.about-text {
+	font-family: "Roboto", sans-serif;
+	font-size: 16px;
+	color: #fff;
 }
 
 input {
@@ -199,7 +206,7 @@ function resize(source)
 			source.value = "LESS";
 		}, 750);
 		
-		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(46, 152, 188), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(46, 152, 188), rgb(46, 152, 188))';
+		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
 		parent.style.width = screen.width - 500 - 50 + "px";
 		parent.style.height = "400px";
 	} else {
@@ -208,8 +215,8 @@ function resize(source)
 			parent.style["background-image"] = 'none';
 		}, 750);
 	
-		parent.style.width = "100px";
-		parent.style.height = "40px";
+		parent.style.width = "105px";
+		parent.style.height = "45px";
 	}
 }
 </script>
@@ -230,7 +237,7 @@ function resize(source)
 	
 	<div class="about" id="about">
 		<input id="minimize" type="button" value="ABOUT" onclick="resize(this)"></input>
+		<label class="about-text">The quick brown fox jumped over the lazy dog</label>
 	</div>
-	<span class="border"></span>
 </body>
 </html>
