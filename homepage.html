@@ -186,7 +186,8 @@ input {
 }
 
 </style>
-<script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
 var animation = true;
 function toggle_animation()
 {
@@ -225,6 +226,14 @@ function resize(source)
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
+	getRepos()
+}
+
+function getRepos()
+{
+	$.getJSON('https://api.github.com/users/mrmattkennedy/repos?sort=updated', function(data) {
+		var parsed = data.filter(item => item.name.indexOf("CIS") == -1);
+	});
 }
 </script>
 </head>
@@ -258,7 +267,7 @@ function resize(source)
 		<label class="about-text"> Video Games</label>
 	</div>
 	
-	<!--<div class="github-widget" data-user="mrmattkennedy" data-options='{"sortBy":"stargazers_count", "limit":6}'></div>-->
+	<!--<div class="github-widget" data-user="mrmattkennedy" data-options='{"sortBy": "pushed_at", "limit":6}'></div>-->
 	<script src="github-widget/github-widget.min.js"></script>
 </body>
 </html>
