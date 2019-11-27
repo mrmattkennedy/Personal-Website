@@ -38,6 +38,7 @@
   box-shadow: inset 0 0 0 1px rgba(105, 202, 98, 0.5);
 }
 
+/*
 .bb::before, .bb::after {
   content: '';
   z-index: -1;
@@ -45,15 +46,21 @@
   box-shadow: inset 0 0 0 2px;
   animation: clipMe 8s linear infinite;
 }
+*/
+
 .bb::before {
   animation-delay: -4s;
 }
 
-/*
+
 .bb:hover::after, .bb:hover::before {
-  background-color: rgba(255, 0, 0, 0.3);
+  content: '';
+  z-index: -1;
+  margin: -5%;
+  box-shadow: inset 0 0 0 2px;
+  animation: clipMe 8s linear infinite;
 }
-*/
+
 
 @keyframes clipMe {
   0%, 100% {
@@ -237,7 +244,18 @@ function resize(source)
 	
 	<div class="about" id="about">
 		<input id="minimize" type="button" value="ABOUT" onclick="resize(this)"></input>
-		<label class="about-text">The quick brown fox jumped over the lazy dog</label>
+		<label class="about-text"><br><br>Hey, my name is Matthew Kennedy. You can call me Matt or Matthew. I'm a recent professional in the field of Computer Science. I've spent time at a variety of companies, doing work such as data management and working at Intel on their Embedded Systems Sort team.<br>Currently, I work at Stryker, an international Medical Device company, as an Advanced Software Quality Engineer.<br>On my website, you can find the side projects I'm working on, as well as my contact info. Feel free to reach out to me!</label>
+		<br><br><br>
+		<label class="about-text">Hobbies:</label>
+		<br>
+		<img src="image001.png" alt="Smiley face" height="40" width="40">
+		<label class="about-text"> Artificial Intelligence&nbsp;&nbsp;&nbsp;</label>
+		<img src="image002.png" alt="Smiley face" height="40" width="40">
+		<label class="about-text"> Cooking/Baking&nbsp;&nbsp;&nbsp;</label>
+		<img src="image004.png" alt="Smiley face" height="40" width="40">
+		<label class="about-text"> Operating Systems&nbsp;&nbsp;&nbsp;</label>
+		<img src="image003.png" alt="Smiley face" height="40" width="40">
+		<label class="about-text"> Video Games</label>
 	</div>
 </body>
 </html>
