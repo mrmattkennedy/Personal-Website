@@ -144,14 +144,19 @@ a:hover::after{
 
 .github-link {
   position: absolute;
-  left: 5.5%;
+  left: 75px;
   top: 330px;
 }
 
+.resume-link {
+  position: absolute;
+  left: 200px;
+  top: 342px;
+}
 
 .linkedin-link {
   position: absolute;
-  left: 337px;
+  left: 325px;
   top: 342px;
 }
 
@@ -161,7 +166,7 @@ a:hover::after{
   width: 105px;
   height: 45px;
   position: absolute;
-  left: 500px;
+  left: 400px;
   top: 50px;
   border: 2px solid transparent;
   background-origin: border-box;
@@ -184,6 +189,7 @@ input {
   height: 40px;
   background-color: #0f222b;
 }
+
 
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -215,8 +221,8 @@ function resize(source)
 		}, 750);
 		
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
-		var width = screen.width - 500 - 50;
-		var height = width / 1.53;
+		var width = screen.width - 400 - 50;
+		var height = width / 1.8;
 		parent.style.width = width + "px";
 		parent.style.height = height + "px";
 	} else {
@@ -228,13 +234,14 @@ function resize(source)
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
-	//getRepos()
+	getRepos()
 }
 
 function getRepos()
 {
 	$.getJSON('https://api.github.com/users/mrmattkennedy/repos?sort=updated', function(data) {
 		var parsed = data.filter(item => item.name.indexOf("CIS") == -1);
+		console.log(parsed);
 	});
 }
 </script>
@@ -252,6 +259,9 @@ function getRepos()
 	<div class="linkedin-link">
 		<p><a href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
 	</div>
+	<div class="resume-link">
+		<p><a class="resume" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
+	</div>
 	
 	<div class="about" id="about">
 		<input id="minimize" type="button" value="ABOUT" onclick="resize(this)"></input>
@@ -259,16 +269,15 @@ function getRepos()
 		<br><br><br>
 		<label class="about-text">Hobbies:</label>
 		<br>
-		<img src="image001.png" alt="Smiley face" height="40" width="40">
+		<img src="files/image001.png" height="40" width="40">
 		<label class="about-text"> Artificial Intelligence&nbsp;&nbsp;&nbsp;</label><br>
-		<img src="image002.png" alt="Smiley face" height="40" width="40">
+		<img src="files/image002.png" height="40" width="40">
 		<label class="about-text"> Cooking/Baking&nbsp;&nbsp;&nbsp;</label><br>
-		<img src="image004.png" alt="Smiley face" height="40" width="40">
+		<img src="files/image004.png" height="40" width="40">
 		<label class="about-text"> Operating Systems&nbsp;&nbsp;&nbsp;</label><br>
-		<img src="image003.png" alt="Smiley face" height="40" width="40">
+		<img src="files/image003.png" height="40" width="40">
 		<label class="about-text"> Video Games</label>
 	</div>
-	
 	<!--<div class="github-widget" data-user="mrmattkennedy" data-options='{"sortBy": "pushed_at", "limit":6}'></div>-->
 	<script src="github-widget/github-widget.min.js"></script>
 </body>
