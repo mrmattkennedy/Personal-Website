@@ -215,8 +215,10 @@ function resize(source)
 		}, 750);
 		
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
-		parent.style.width = screen.width - 500 - 50 + "px";
-		parent.style.height = "400px";
+		var width = screen.width - 500 - 50;
+		var height = width / 1.53;
+		parent.style.width = width + "px";
+		parent.style.height = height + "px";
 	} else {
 		setTimeout(function(){
 			source.value = "ABOUT";
@@ -226,7 +228,7 @@ function resize(source)
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
-	getRepos()
+	//getRepos()
 }
 
 function getRepos()
@@ -258,11 +260,11 @@ function getRepos()
 		<label class="about-text">Hobbies:</label>
 		<br>
 		<img src="image001.png" alt="Smiley face" height="40" width="40">
-		<label class="about-text"> Artificial Intelligence&nbsp;&nbsp;&nbsp;</label>
+		<label class="about-text"> Artificial Intelligence&nbsp;&nbsp;&nbsp;</label><br>
 		<img src="image002.png" alt="Smiley face" height="40" width="40">
-		<label class="about-text"> Cooking/Baking&nbsp;&nbsp;&nbsp;</label>
+		<label class="about-text"> Cooking/Baking&nbsp;&nbsp;&nbsp;</label><br>
 		<img src="image004.png" alt="Smiley face" height="40" width="40">
-		<label class="about-text"> Operating Systems&nbsp;&nbsp;&nbsp;</label>
+		<label class="about-text"> Operating Systems&nbsp;&nbsp;&nbsp;</label><br>
 		<img src="image003.png" alt="Smiley face" height="40" width="40">
 		<label class="about-text"> Video Games</label>
 	</div>
