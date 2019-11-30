@@ -118,14 +118,14 @@ p{
 }
 
 
-a{
+.info-link {
   display: block;
   color: white;
   text-decoration: none;
   position: relative;
 }
 
-a::after{
+.info-link::after{
   content: "";
   background: white;
   width: calc(100% + 20px);
@@ -137,7 +137,7 @@ a::after{
 	transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 
-a:hover::after{
+.info-link:hover::after{
 	height: calc(100% + 8px)
 }
 
@@ -237,11 +237,44 @@ function resize(source)
 	getRepos()
 }
 
+function getRepo(url){
+  return $.getJSON(url).then(function(data){
+    return {
+      repos:data.filter(item => item.name.indexOf("CIS") == -1),
+	  commits:jQuery.map(data.filter(item => item.name.indexOf("CIS") == -1), function( a ) {
+				  return a.commits_url.substring(0, a.commits_url.length - "{/sha}".length);
+				})
+    }
+  });
+}
+
 function getRepos()
 {
+	getRepo('https://api.github.com/users/mrmattkennedy/repos?sort=updated').then(function(returndata){
+	  console.log(returndata);
+	});
 	$.getJSON('https://api.github.com/users/mrmattkennedy/repos?sort=updated', function(data) {
 		var parsed = data.filter(item => item.name.indexOf("CIS") == -1);
-		console.log(parsed);
+		var parent = document.getElementById("github-repos");
+		for (var i = 0; i < parsed.length; i++)
+		{
+			var div = document.createElement('div');
+				div.setAttribute('class', 'repo');
+			var link = document.createElement('a');
+				link.setAttribute('href', parsed[i].html_url)
+				link.setAttribute('target', '_blank')
+				link.text = parsed[i].name;
+				
+			var commits = null;
+			$.getJSON(parsed[i].commits_url.substring(0, parsed[i].commits_url.length - "{/sha}".length), function(data) {
+				commits=data;
+				//console.log(commits.length)
+				link.text = commits.length;
+				div.append(link);
+				parent.appendChild(div);
+				parent.appendChild(document.createElement('br'));
+			});
+		}
 	});
 }
 </script>
@@ -254,13 +287,13 @@ function getRepos()
 	
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
 	<div class="github-link">
-		<p><a href="https://github.com/mrmattkennedy" target="_blank">GitHub</a></p></br>
-	</div>
-	<div class="linkedin-link">
-		<p><a href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
+		<p><a class="info-link" href="https://github.com/mrmattkennedy" target="_blank">GitHub</a></p></br>
 	</div>
 	<div class="resume-link">
-		<p><a class="resume" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
+		<p><a class="info-link" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
+	</div>
+	<div class="linkedin-link">
+		<p><a class="info-link" href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
 	</div>
 	
 	<div class="about" id="about">
@@ -278,6 +311,8 @@ function getRepos()
 		<img src="files/image003.png" height="40" width="40">
 		<label class="about-text"> Video Games</label>
 	</div>
+	
+	<li class="github-repos" id="github-repos"></li>
 	<!--<div class="github-widget" data-user="mrmattkennedy" data-options='{"sortBy": "pushed_at", "limit":6}'></div>-->
 	<script src="github-widget/github-widget.min.js"></script>
 </body>
