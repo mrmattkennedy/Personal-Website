@@ -190,6 +190,31 @@ input {
   background-color: #0f222b;
 }
 
+.github-repos {
+	position: relative;
+	top: 100px;
+	left: 100px;
+	list-style-type: none;
+	columns: 2;
+	column-gap: 400px;
+}
+
+.commit-icon {
+	width: 20px;
+	height: 20px;
+	float: right;
+}
+
+.commit-label {
+	font-family: "Roboto", sans-serif;
+	font-size: 16px;
+	color: #fff;
+	float: right;
+}
+
+.repo {
+	width: 400px;
+}
 
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -222,9 +247,10 @@ function resize(source)
 		
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
 		var width = screen.width - 400 - 50;
-		var height = width / 1.8;
 		parent.style.width = width + "px";
-		parent.style.height = height + "px";
+		parent.style.height = "auto";
+		
+		
 	} else {
 		setTimeout(function(){
 			source.value = "ABOUT";
@@ -234,10 +260,9 @@ function resize(source)
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
-	getRepos()
 }
 
-function getRepo(url) {
+function getJson(url) {
 	return new Promise((resolve, reject) => {
 		$.getJSON(url, data => {
 			resolve(data);
@@ -248,22 +273,29 @@ function getRepo(url) {
 async function getRepos()
 {
 	try {
-		let data = await getRepo('https://api.github.com/users/mrmattkennedy/repos?sort=updated');
+		let data = await getJson('https://api.github.com/users/mrmattkennedy/repos?sort=updated');
 		var parsed = data.filter(item => item.name.indexOf("CIS") == -1);
 		var parent = document.getElementById("github-repos");
 		for (var i = 0; i < parsed.length; i++)
 		{
+			let commits = await getJson(parsed[i].commits_url.substring(0, parsed[i].commits_url.length - "{/sha}".length));
+			
 			var div = document.createElement('div');
 				div.setAttribute('class', 'repo');
 			var link = document.createElement('a');
 				link.setAttribute('href', parsed[i].html_url)
 				link.setAttribute('target', '_blank')
 				link.text = parsed[i].name;
-				
-			let commits = await getRepo(parsed[i].commits_url.substring(0, parsed[i].commits_url.length - "{/sha}".length));
-			console.log(commits.length);
-			link.text = commits.length;
+			var commit_ico = document.createElement('img');
+				commit_ico.setAttribute('class', 'commit-icon');
+				commit_ico.setAttribute('src', 'files/commit-icon.jpg');
+			var commit_label = document.createElement('label');
+				commit_label.setAttribute('class', 'commit-label');
+				commit_label.textContent = commits.length
+			
 			div.append(link);
+			div.append(commit_label);
+			div.append(commit_ico);
 			parent.appendChild(div);
 			parent.appendChild(document.createElement('br'));
 		}
