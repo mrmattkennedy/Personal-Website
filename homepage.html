@@ -192,11 +192,15 @@ input {
 
 .github-repos {
 	position: relative;
-	top: 100px;
-	left: 100px;
+	top: 10%;
+	left: 5%;
+	width: 95%;
 	list-style-type: none;
+	margin-top: auto;
+	/*
 	columns: 2;
 	column-gap: 400px;
+	*/
 }
 
 .commit-icon {
@@ -256,7 +260,7 @@ function resize(source)
 			source.value = "ABOUT";
 			parent.style["background-image"] = 'none';
 		}, 750);
-	
+		console.log(parent.style.offsetHeight);
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
@@ -274,7 +278,7 @@ async function getRepos()
 {
 	try {
 		let data = await getJson('https://api.github.com/users/mrmattkennedy/repos?sort=updated');
-		var parsed = data.filter(item => item.name.indexOf("CIS") == -1);
+		var parsed = data.filter(item => item.name.indexOf("CIS") == -1 && item.name.indexOf("test"));
 		var parent = document.getElementById("github-repos");
 		for (var i = 0; i < parsed.length; i++)
 		{
@@ -294,8 +298,8 @@ async function getRepos()
 				commit_label.textContent = commits.length
 			
 			div.append(link);
-			div.append(commit_label);
 			div.append(commit_ico);
+			div.append(commit_label);
 			parent.appendChild(div);
 			parent.appendChild(document.createElement('br'));
 		}
@@ -308,9 +312,7 @@ async function getRepos()
 </script>
 </head>
 <body style="margin:0px; padding:0px;" onload="getRepos()">
-	<div class="bb" id="bb" onclick="toggle_animation()">
-		<!--<img class="image" src="Profile.jpg" alt="" />-->
-	</div>
+	<div class="bb" id="bb" onclick="toggle_animation()"></div>
 	
 	
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
@@ -341,7 +343,5 @@ async function getRepos()
 	</div>
 	
 	<li class="github-repos" id="github-repos"></li>
-	<!--<div class="github-widget" data-user="mrmattkennedy" data-options='{"sortBy": "pushed_at", "limit":6}'></div>-->
-	<script src="github-widget/github-widget.min.js"></script>
 </body>
 </html>
