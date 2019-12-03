@@ -290,7 +290,7 @@ function resize(source)
 		
 		resume.style.bottom = "50px";
 		parent.style.backgroundColor = "#379683";
-		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
+		parent.style["background-image"] = 'linear-gradient(to right, rgb(33, 147, 176), rgb(109,213,237)), linear-gradient(to bottom, rgb(109,213,237), rgb(33, 147, 176)), linear-gradient(to left, rgb(33, 147, 176), rgb(109,213,237)), linear-gradient(to top, rgb(109,213,237), rgb(33, 147, 176))';
 		var width = screen.width - 400 - 50;
 		parent.style.width = width + "px";
 		parent.style.height = "auto";
@@ -321,14 +321,19 @@ async function getRepos()
 	try {
 		var bar = document.getElementById('load-bar');
 		var blur = document.getElementById('blur');
+		var parent = document.getElementById("github-repos");
+		
 		let data = await getJson('https://api.github.com/users/mrmattkennedy/repos?sort=updated');
 		var parsed = data.filter(item => item.name.indexOf("CIS") == -1 && item.name.indexOf("test"));
-		console.log(parsed);
-		var parent = document.getElementById("github-repos");
 		for (var i = 0; i < parsed.length; i++)
 		{
 			let commits = await getJson(parsed[i].commits_url.substring(0, parsed[i].commits_url.length - "{/sha}".length));
+			let languages = await getJson(parsed[i].languages_url);
+			var language_label = ""
+			for (var k in languages)
+				language_label += k + ", ";
 			
+			language_label = language_label.substring(0, language_label.length - 2);
 			var div = document.createElement('div');
 				div.setAttribute('class', 'repo');
 			var link = document.createElement('a');
@@ -341,7 +346,7 @@ async function getRepos()
 			
 			var language = document.createElement('label');
 				language.setAttribute('class', 'language');
-				language.textContent = parsed[i].language;
+				language.textContent = language_label;
 			var description = document.createElement('label');
 				description.setAttribute('class', 'description');
 				description.textContent = parsed[i].description;
@@ -354,6 +359,7 @@ async function getRepos()
 			div.append(description);
 			parent.appendChild(div);
 			parent.appendChild(document.createElement('br'));
+			
 			bar.value += (1/parsed.length + 1) * 100;
 		}
 		document.body.style.backgroundImage = "linear-gradient(to bottom right, #EDF5E1, #8EE4AF, #5CDB95, #379683, #05386B)";
