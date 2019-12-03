@@ -133,19 +133,19 @@ p{
 
 .github-link {
   position: absolute;
-  left: 95%;
+  right: 40px;
   bottom: 140px;
 }
 
 .resume-link {
   position: absolute;
-  left: 95%;
+  right: 40px;
   bottom: 500px;
 }
 
 .linkedin-link {
   position: absolute;
-  left: 95%;
+  right: 40px;
   bottom: 100px;
 }
 
@@ -291,7 +291,8 @@ function resize(source)
 		resume.style.bottom = "50px";
 		parent.style.backgroundColor = "#379683";
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(33, 147, 176), rgb(109,213,237)), linear-gradient(to bottom, rgb(109,213,237), rgb(33, 147, 176)), linear-gradient(to left, rgb(33, 147, 176), rgb(109,213,237)), linear-gradient(to top, rgb(109,213,237), rgb(33, 147, 176))';
-		var width = screen.width - 400 - 50;
+		var width = window.innerWidth - 400 - 50;
+		console.log(window);
 		parent.style.width = width + "px";
 		parent.style.height = "auto";
 		
