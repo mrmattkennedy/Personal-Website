@@ -83,9 +83,9 @@ html, body {
 body {
   position: relative;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 400;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   letter-spacing: .1em
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -156,9 +156,8 @@ p{
   height: 45px;
   position: absolute;
   left: 400px;
-  top: 50px;
+  top: 4%;
   border: 2px solid transparent;
-  background-color: #379683;
   background-origin: border-box;
   background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
   background-position: top left, top right, bottom right, bottom left;
@@ -180,6 +179,12 @@ input {
   background-color: #0f222b;
 }
 
+.repos-header {
+	font-family: "Roboto", sans-serif;
+	font-size: 28px;
+	font-weight: bold;
+}
+
 .github-repos {
 	position: relative;
 	top: 10%;
@@ -193,12 +198,6 @@ input {
 	width: 100%;
 }
 
-.commit-icon {
-	width: 20px;
-	height: 20px;
-	float: right;
-}
-
 .commit-label {
 	font-family: "Roboto", sans-serif;
 	font-size: 16px;
@@ -206,6 +205,56 @@ input {
 	float: right;
 }
 
+
+progress {
+  border: 0;
+  background: #eee;
+  border-radius: 100px;
+  position: absolute;
+  top: 47.5%;
+  left: 30%;
+  width: 40%;
+  height: 5%;
+}
+progress::-moz-progress-bar {
+  border-radius: 100px;
+  background-image:
+	   -webkit-linear-gradient(-45deg, 
+	                           transparent 33%, rgba(0, 0, 0, .1) 33%, 
+	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top, 
+	                           rgba(255, 255, 255, .25), 
+	                           rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left, #09c, #f44)
+}
+progress::-webkit-progress-bar {
+  background: #eee;
+  border-radius: 100px;
+  -webkit-transition : width 0.5s ease;
+}
+progress::-webkit-progress-value {
+	-webkit-transition : width 0.5s ease;
+  border-radius: 100px;
+  background-image:
+	   -webkit-linear-gradient(-45deg, 
+	                           transparent 33%, rgba(0, 0, 0, .1) 33%, 
+	                           rgba(0,0, 0, .1) 66%, transparent 66%),
+	   -webkit-linear-gradient(top, 
+	                           rgba(255, 255, 255, .25), 
+	                           rgba(0, 0, 0, .25)),
+	   -webkit-linear-gradient(left, #09c, #f44)
+}
+
+#blur {
+  background-size: cover;
+  overflow: hidden;
+  backdrop-filter:blur(10px);
+  position: absolute; 
+  width: 100%;
+  height: 100%;
+  transition: all 1.0s;
+  z-index: 10;
+}
 
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -240,6 +289,7 @@ function resize(source)
 		}, 750);
 		
 		resume.style.bottom = "50px";
+		parent.style.backgroundColor = "#379683";
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
 		var width = screen.width - 400 - 50;
 		parent.style.width = width + "px";
@@ -250,6 +300,7 @@ function resize(source)
 			source.value = "ABOUT";
 			parent.style["background-image"] = 'none';
 			repos.style.top = "10%";
+			parent.style.backgroundColor = "transparent";
 		}, 750);
 		resume.style.bottom = "500px";
 		parent.style.width = "105px";
@@ -268,8 +319,11 @@ function getJson(url) {
 async function getRepos()
 {
 	try {
+		var bar = document.getElementById('load-bar');
+		var blur = document.getElementById('blur');
 		let data = await getJson('https://api.github.com/users/mrmattkennedy/repos?sort=updated');
 		var parsed = data.filter(item => item.name.indexOf("CIS") == -1 && item.name.indexOf("test"));
+		console.log(parsed);
 		var parent = document.getElementById("github-repos");
 		for (var i = 0; i < parsed.length; i++)
 		{
@@ -281,12 +335,9 @@ async function getRepos()
 				link.setAttribute('href', parsed[i].html_url)
 				link.setAttribute('target', '_blank')
 				link.text = parsed[i].name;
-			var commit_ico = document.createElement('img');
-				commit_ico.setAttribute('class', 'commit-icon');
-				commit_ico.setAttribute('src', 'files/commit-icon.jpg');
 			var commit_label = document.createElement('label');
 				commit_label.setAttribute('class', 'commit-label');
-				commit_label.textContent = commits.length
+				commit_label.textContent = commits.length.toString() + " commits";
 			
 			var language = document.createElement('label');
 				language.setAttribute('class', 'language');
@@ -296,7 +347,6 @@ async function getRepos()
 				description.textContent = parsed[i].description;
 			
 			div.append(link);
-			div.append(commit_ico);
 			div.append(commit_label);
 			div.appendChild(document.createElement('br'));
 			div.append(language);
@@ -304,8 +354,17 @@ async function getRepos()
 			div.append(description);
 			parent.appendChild(div);
 			parent.appendChild(document.createElement('br'));
+			bar.value += (1/parsed.length + 1) * 100;
 		}
 		document.body.style.backgroundImage = "linear-gradient(to bottom right, #EDF5E1, #8EE4AF, #5CDB95, #379683, #05386B)";
+		
+		bar.value += (1/parsed.length + 1) * 100;
+		bar.style.display = "none";
+		setTimeout(function(){
+			blur.style.display = "none";
+		}, 1000);
+		blur.style.width = "0px";
+		blur.style.height = "0px";
 	} catch(error) {
 		console.log(error);
 	}
@@ -315,9 +374,12 @@ async function getRepos()
 </script>
 </head>
 <body onload="getRepos()">
+	<div id="blur">
+		<progress color="#8ccc62" max="100" value="0" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" tabindex="-1" id="load-bar"></progress>
+	</div>
 	<div class="bb" id="bb" onclick="toggle_animation()"></div>	
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
 	
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
 	<div class="about" id="about">
 		<input id="minimize" type="button" value="ABOUT" onclick="resize(this)"></input>
 		<label class="about-text"><br><br>Hey, my name is Matthew Kennedy. You can call me Matt or Matthew. I'm a recent professional in the field of Computer Science. I've spent time at a variety of companies, doing work such as data management and working at Intel on their Embedded Systems Sort team.<br>Currently, I work at Stryker, an international Medical Device company, as an Advanced Software Quality Engineer.<br>On my website, you can find the side projects I'm working on, as well as my contact info. Feel free to reach out to me!</label>
@@ -334,19 +396,21 @@ async function getRepos()
 		<img src="files/image003.png" height="40" width="40">
 		<label class="about-text"> Video Games</label>
 		
-		<label class="about-text">Links:</label>
 		<div class="github-link">
 			<p><a class="info-link" href="https://github.com/mrmattkennedy" target="_blank">GitHub</a></p>
 			</br>
 		</div>
 		<div class="resume-link" id="resume-link">
-			<p><a class="info-link" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
+			<p><a class="info-link" href="files/Matts Resume 5.pdf" target="_blank">Resume</a><p>
 		</div>
 		<div class="linkedin-link">
 			<p><a class="info-link" href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
 		</div>
 	</div>
 	
-	<li class="github-repos" id="github-repos"></li>
+	<li class="github-repos" id="github-repos">
+		<label class="repos-header">GitHub Repositories</label>
+		</br>
+	</li>
 </body>
 </html>
