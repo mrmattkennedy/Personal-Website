@@ -1,5 +1,5 @@
 <html>
-<head <link href="github-widget/github-widget.css" rel="stylesheet" type="text/css" />>
+<head <link href="github-widget/github-widget.css" rel="stylesheet" type="text/css" />
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <title>Matt Kennedy</title>
@@ -34,7 +34,7 @@
   height: 300px;
   background: url("https://avatars2.githubusercontent.com/u/35405371?s=460&v=4") no-repeat 50%/70% rgba(0, 0, 0, 0.1);
   background-size: 290px 290px;
-  color: #69ca62;
+  color: #05386B;
   box-shadow: inset 0 0 0 1px rgba(5, 56, 107, 0.5);
 }
 
@@ -82,12 +82,13 @@ html, body {
 
 body {
   position: relative;
-  background-color: #5CDB95;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: .1em
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 *,
@@ -98,18 +99,6 @@ body {
 
 
 /*Link animation from https://codepen.io/TiagoLopes/pen/yopxeW*/
-/*
-body{
-  background: black;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: .1em
-}
-*/
-
-
 p{
   position: absolute;
   top: 50%;
@@ -144,20 +133,20 @@ p{
 
 .github-link {
   position: absolute;
-  left: 75px;
-  top: 330px;
+  left: 95%;
+  bottom: 140px;
 }
 
 .resume-link {
   position: absolute;
-  left: 200px;
-  top: 342px;
+  left: 95%;
+  bottom: 500px;
 }
 
 .linkedin-link {
   position: absolute;
-  left: 325px;
-  top: 342px;
+  left: 95%;
+  bottom: 100px;
 }
 
 
@@ -169,6 +158,7 @@ p{
   left: 400px;
   top: 50px;
   border: 2px solid transparent;
+  background-color: #379683;
   background-origin: border-box;
   background-size: 100% 2px, 2px 100%, 100% 2px, 2px 100%;
   background-position: top left, top right, bottom right, bottom left;
@@ -194,13 +184,13 @@ input {
 	position: relative;
 	top: 10%;
 	left: 5%;
-	width: 95%;
+	width: 90%;
 	list-style-type: none;
-	margin-top: auto;
-	/*
-	columns: 2;
-	column-gap: 400px;
-	*/
+	transition: 0.75s;	
+}
+
+.repo {
+	width: 100%;
 }
 
 .commit-icon {
@@ -216,9 +206,6 @@ input {
 	float: right;
 }
 
-.repo {
-	width: 400px;
-}
 
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -242,25 +229,29 @@ function toggle_animation()
 
 function resize(source)
 {
-	parent = source.parentNode;
+	var parent = source.parentNode;
+	var repos = document.getElementById("github-repos");
+	var resume = document.getElementById("resume-link");
 	if (source.value == "ABOUT")
 	{
 		setTimeout(function(){
 			source.value = "LESS";
+			repos.style.top = parent.offsetHeight - 240;
 		}, 750);
 		
+		resume.style.bottom = "50px";
 		parent.style["background-image"] = 'linear-gradient(to right, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to bottom, rgb(198, 98, 98), rgb(46, 152, 188)), linear-gradient(to left, rgb(46, 152, 188), rgb(198, 98, 98)), linear-gradient(to top, rgb(198, 98, 98), rgb(46, 152, 188))';
 		var width = screen.width - 400 - 50;
 		parent.style.width = width + "px";
 		parent.style.height = "auto";
 		
-		
 	} else {
 		setTimeout(function(){
 			source.value = "ABOUT";
 			parent.style["background-image"] = 'none';
+			repos.style.top = "10%";
 		}, 750);
-		console.log(parent.style.offsetHeight);
+		resume.style.bottom = "500px";
 		parent.style.width = "105px";
 		parent.style.height = "45px";
 	}
@@ -297,12 +288,24 @@ async function getRepos()
 				commit_label.setAttribute('class', 'commit-label');
 				commit_label.textContent = commits.length
 			
+			var language = document.createElement('label');
+				language.setAttribute('class', 'language');
+				language.textContent = parsed[i].language;
+			var description = document.createElement('label');
+				description.setAttribute('class', 'description');
+				description.textContent = parsed[i].description;
+			
 			div.append(link);
 			div.append(commit_ico);
 			div.append(commit_label);
+			div.appendChild(document.createElement('br'));
+			div.append(language);
+			div.appendChild(document.createElement('br'));
+			div.append(description);
 			parent.appendChild(div);
 			parent.appendChild(document.createElement('br'));
 		}
+		document.body.style.backgroundImage = "linear-gradient(to bottom right, #EDF5E1, #8EE4AF, #5CDB95, #379683, #05386B)";
 	} catch(error) {
 		console.log(error);
 	}
@@ -311,25 +314,15 @@ async function getRepos()
 
 </script>
 </head>
-<body style="margin:0px; padding:0px;" onload="getRepos()">
-	<div class="bb" id="bb" onclick="toggle_animation()"></div>
-	
-	
+<body onload="getRepos()">
+	<div class="bb" id="bb" onclick="toggle_animation()"></div>	
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
-	<div class="github-link">
-		<p><a class="info-link" href="https://github.com/mrmattkennedy" target="_blank">GitHub</a></p></br>
-	</div>
-	<div class="resume-link">
-		<p><a class="info-link" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
-	</div>
-	<div class="linkedin-link">
-		<p><a class="info-link" href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
-	</div>
 	
 	<div class="about" id="about">
 		<input id="minimize" type="button" value="ABOUT" onclick="resize(this)"></input>
 		<label class="about-text"><br><br>Hey, my name is Matthew Kennedy. You can call me Matt or Matthew. I'm a recent professional in the field of Computer Science. I've spent time at a variety of companies, doing work such as data management and working at Intel on their Embedded Systems Sort team.<br>Currently, I work at Stryker, an international Medical Device company, as an Advanced Software Quality Engineer.<br>On my website, you can find the side projects I'm working on, as well as my contact info. Feel free to reach out to me!</label>
 		<br><br><br>
+		
 		<label class="about-text">Hobbies:</label>
 		<br>
 		<img src="files/image001.png" height="40" width="40">
@@ -340,6 +333,18 @@ async function getRepos()
 		<label class="about-text"> Operating Systems&nbsp;&nbsp;&nbsp;</label><br>
 		<img src="files/image003.png" height="40" width="40">
 		<label class="about-text"> Video Games</label>
+		
+		<label class="about-text">Links:</label>
+		<div class="github-link">
+			<p><a class="info-link" href="https://github.com/mrmattkennedy" target="_blank">GitHub</a></p>
+			</br>
+		</div>
+		<div class="resume-link" id="resume-link">
+			<p><a class="info-link" href="files/Matts Resume 5.pdf" target="_blank">RESUME</a><p>
+		</div>
+		<div class="linkedin-link">
+			<p><a class="info-link" href="https://www.linkedin.com/in/mrmattkennedy/" target="_blank">LinkedIn</a></p>
+		</div>
 	</div>
 	
 	<li class="github-repos" id="github-repos"></li>
